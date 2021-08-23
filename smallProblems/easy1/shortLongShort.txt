@@ -1,0 +1,10 @@
+Problem: Write a function that takes two strings as arguments, assume that they are not equal length. The function returns the shorter string, followed by the longer string and then the shorter string again. Assume the arguments are valid strings
+
+Example: shortLongShort('abc', 'defgh');    // "abcdefghabc"
+shortLongShort('abcde', 'fgh');    // "fghabcdefgh"
+shortLongShort('', 'xyz');         // "xyz"
+
+Data Structures: Receive two string arguments, output one string argument\
+
+Algorithm: Compare the length of both strings and find the smaller one
+Write a simple string concatenating expression to add the shorter string followed by the longer one followed by the shorter one

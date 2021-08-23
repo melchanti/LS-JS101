@@ -1,0 +1,15 @@
+Problem: Write a function to find the sum of the UTF-16 characters in a string. Assume that the arguments passed to the function is a string.
+
+Examples: utf16Value('Four score');         // 984
+utf16Value('Launch School');      // 1251
+utf16Value('a');                  // 97
+utf16Value('');                   // 0
+
+Data Structures: Input: 1 string, Output: 1 integer
+
+Algorithm:
+Initiate total to 0
+Loop over the length of a string
+	total += string[I].charCodeAt();
+
+Return total;

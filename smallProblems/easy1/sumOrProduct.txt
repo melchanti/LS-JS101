@@ -1,0 +1,8 @@
+Problem: Ask a user to input a number larger than 0 (we are assuming that the user will only input an integer that is bigger than 0). Ask the user to also choose whether they want to find the multiples or the sum of all integers between 0 and their chosen number.
+Based on what the user responds, compute the sum or product and output it as an integer.
+
+Examples: Input: 5, s. Output: 15. Input: 5, p. Output: 120.
+
+Data Structures: Input, two strings. Output: 1 number.
+
+Algorithm: Use a for loop to loop from 0 up until the number given by the user and either multiply or divide. Create two separate functions, one for add and the other for multiply.

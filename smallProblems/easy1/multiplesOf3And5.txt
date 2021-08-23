@@ -1,0 +1,17 @@
+Problem: Return the sum of all numbers that are multiples of 3 and 5 that are between 1 and some other number. Assume the other number is an integer greater than 1
+
+Example: multisum(3);       // 3
+multisum(5);       // 8
+multisum(10);      // 33
+multisum(1000);    // 234168
+
+Data Structure: Input: one integer, output: one integer
+
+Algorithm:
+Initiate an empty array
+Loop from 1 until n:
+	check whether a number is divisible by 3 and 5:
+		add it to an array
+
+Loop through the numbers array using .reduce method and get one number that sums the numbers in that array
+Return the answer
