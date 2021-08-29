@@ -1,0 +1,21 @@
+{
+	"English" : {"welcome" : "Welcome to Calculator!",
+		"number1" : "What's the first number?",
+		"number2" : "What's the second number?",
+		"operation" : "What operation would you like to perform? \n 1) Add 2) Subtract 3) Multiply 4) Divide",
+		"result" : "The result is: ",
+		"continue" : "Would you like to perform another operation (Y/N)?",
+		"wrongNumber": "Hmm... that doesn't look like a valid number.",
+		"wrongOperation" : "Must choose 1, 2, 3 or 4",
+		"ThankYou": "Thank you, come again!"
+	},
+	"French" : {"welcome" : "bienvenue à la calculatrice!",
+		"number1" : "Quel est le premier nombre?",
+		"number2" : "Quel est le deuxième nombre?",
+		"operation" : "Quelle opération souhaitez-vous effectuer ? \n 1) Ajouter 2) Soustraire 3) Multiplier 4) Diviser",
+		"result" : "Le résultat est: ",
+		"continue" : "Souhaitez-vous effectuer une autre opération (Y/N)?",
+		"wrongNumber": "Hmm... ça n'a pas l'air d'être un numéro valide.",
+		"wrongOperation" : "Doit choisir 1, 2, 3 ou 4",
+		"ThankYou": "Merci, revenez nous voir!"}
+}
