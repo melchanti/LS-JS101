@@ -1,0 +1,51 @@
+Problem: Calculate the monthly interest rate and loan duration in months given the loan amount, the annual percentage rate (APR) and the loan duration.
+
+Use the formula below: let m = p * (j / (1 - Math.pow ((1+j), (-n))));
+
+Assume the loan amount is in dollars and the annual percentage rate is in percentage ex. 5%, the loan duration input is in years entered as three separate variables.
+
+Examples:
+Input: 500000, 5, 30
+Output: 2684.11, 360
+
+Input: 0, 5, 30
+Output: 0, 0
+
+Input: -500000, 5, 30
+Output: Invalid
+
+Input: 500000, 100, 30
+Output: 41,666.67, 360
+
+Input: 500000, 0, 30
+Output: 1388.89, 360
+
+Input: 500000, -5, 30
+Output: invalid interest rate
+
+Input: 500000, 5, 0
+Output: 500000
+
+Input: 500000, 5, -4
+Output: Invalid
+
+Data Structures:
+3 Strings as input
+
+2 numbers as output
+
+Algorithm:
+
+START
+
+#Given three different strings as LOANAMOUNT, APR, LOANLENGTHINYEARS
+
+SET loanInMonths = LOANLENGTHINYEARS * 12
+
+SET monthlyINTEREST = APR / 12
+
+SET monthPayment = LOANAMOUNT * (monthlyInterest / (1 - Math.pow((1 + monthlyInterest), (-loanMonths))))
+
+PRINT loanInMonths, monthPayment
+
+END
