@@ -1,0 +1,67 @@
+Problem:
+1- Add two more inputs into the RPS program, lizard and Spock
+	Scissors > PaPer
+	Paper > Rock
+	Rock > Lizard
+	Lizard > Spock
+	Spock > Scissors
+	Scissors > Lizard
+	Lizard > Paper
+	Paper > Spock
+	Spock > Rock
+	Rock > Scissors
+
+Shortened version
+	Scissors > Paper and Lizard
+	Paper > Rock and Spock
+	Rock > Lizard and Scissors
+	Lizard > Spock and Paper
+	Spock > Scissors and Rock
+	
+	Scissors < Spock and Rock	
+	Paper < Scissors and Lizard
+	Rock < Paper and Spock
+	Lizard < Rock and Scissors
+	Spock < Lizard and Paper
+	
+
+One input, one generated number, one output
+
+Example:
+1- Input: Rock
+Computer: Lizard
+User wins
+
+Input: Paper
+Computer: Spock
+User wins
+
+Input: Scissors
+Computer: Lizard
+User wins
+
+Input: Scissor
+Computer: Spock
+Computer wins
+
+Data Structures:
+1-
+One string as input, one string as output
+
+Algorithm:
+
+1.
+START
+
+DO {
+	#Given a string of one of the five options rock, paper, scissors, lizard and Spock
+
+	SET VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'Spock']
+
+	VALIDATE(userChoice)
+
+	SET computerChoice = Math.floor(Math.random() * VALID_CHOICES.length())
+
+	findWinner (userChoice, computerChoice);
+} while (playAgain());
+
