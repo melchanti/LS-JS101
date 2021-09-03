@@ -35,6 +35,8 @@ function getUserChoice() {
       return 'lizard(l)';
     case 'sp':
       return 'spock(sp)';
+    default:
+      return 'wrong choice';
   }
 }
 
@@ -44,27 +46,43 @@ function getComputerChoice() {
   return VALID_CHOICES[randomIndex];
 }
 
-//function that returns the winner of a single
-//set to the console after comparing the inputs
-function getSetWinner(userChoice, computerChoice) {
-  prompt (`You chose ${userChoice}, computer chose ${computerChoice}`);
-
+function playerWins (userChoice, computerChoice) {
   if ((userChoice === 'scissors(sc)' && computerChoice.match(SCISSORS_WINNER)) ||
       (userChoice === 'paper(p)' && computerChoice.match(PAPER_WINNER)) ||
       (userChoice === 'rock(r)' && computerChoice.match(ROCK_WINNER)) ||
       (userChoice === 'lizard(l)' && computerChoice.match(LIZARD_WINNER)) ||
       (userChoice === 'spock(sp)' && computerChoice.match(SPOCK_WINNER))) {
-    prompt('You win the set!');
-    return 'user';
-  } else if ((userChoice === 'scissors(sc)' && computerChoice.match(SCISSORS_LOSER)) ||
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function computerWins (userChoice, computerChoice) {
+  if ((userChoice === 'scissors(sc)' && computerChoice.match(SCISSORS_LOSER)) ||
       (userChoice === 'paper(p)' && computerChoice.match(PAPER_LOSER)) ||
       (userChoice === 'rock(r)' && computerChoice.match(ROCK_LOSER)) ||
       (userChoice === 'lizard(l)' && computerChoice.match(LIZARD_LOSER)) ||
       (userChoice === 'spock(sp)' && computerChoice.match(SPOCK_LOSER))) {
-    prompt('Computer wins the set.');
+    return true;
+  } else {
+    return false;
+  }
+}
+//function that returns the winner of a single
+//set to the console after comparing the inputs
+function getSetWinner(userChoice, computerChoice) {
+  prompt (`You chose ${userChoice}, computer chose ${computerChoice}`);
+
+  if (playerWins(userChoice, computerChoice)) {
+    prompt('You win the set!\n');
+    return 'user';
+  } else if (computerWins(userChoice, computerChoice)) {
+    prompt('Computer wins the set.\n');
     return 'computer';
   } else {
-    prompt("It's a tie");
+    prompt("It's a tie\n");
+    return 'neither wins';
   }
 }
 
@@ -74,7 +92,7 @@ function displayGameWinner () {
   let computerWins = 0;
   while (userWins < 3 && computerWins < 3) {
 
-    readline.question('=> Click enter to continue');
+    readline.question('=> Click enter to continue\n');
     console.clear();
     let setWinner = getSetWinner(getUserChoice(), getComputerChoice());
 
