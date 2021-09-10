@@ -1,136 +1,170 @@
 console.clear();
 const readline = require('readline-sync');
-const VALID_CHOICES = ['rock(r)', 'paper(p)', 'scissors(sc)', 'lizard(l)', 'spock(sp)'];
-const SCISSORS_WINNER = /paper\(p\)|lizard\(l\)/;
-const PAPER_WINNER = /rock\(r\)|spock\(sp\)/;
-const ROCK_WINNER = /lizard\(l\)|scissors\(sc\)/;
-const LIZARD_WINNER = /spock\(sp\)|paper\(p\)/;
-const SPOCK_WINNER = /scissors\(sc\)|rock\(r\)/;
-
-const SCISSORS_LOSER = /spock\(sp\)|rock\(r\)/;
-const PAPER_LOSER = /scissors\(sc\)|lizard\(l\)/;
-const ROCK_LOSER = /paper\(p\)|spock\(sp\)/;
-const LIZARD_LOSER = /rock\(r\)|scissors\(sc\)/;
-const SPOCK_LOSER = /lizard\(l\)|paper\(p\)/;
+const VALID_CHOICES = {
+  rock: { shorthand: 'r', beats: ['lizard','scissors'] },
+  paper: { shorthand: 'p', beats: ['rock', 'spock'] },
+  scissors: { shorthand: 'sc', beats: ['paper', 'lizard'] },
+  lizard: { shorthand: 'l', beats: ['spock', 'paper'] },
+  spock: { shorthand: 'sp', beats: ['scissors', 'rock'] },
+};
+const VALID_YES_OR_NO = ['yes', 'y', 'no', 'n'];
+const MAX_SCORE = 3;
 
 function prompt(message) {
   console.log(`=> ${message}`);
 }
-//function to get input from user
-function getUserChoice() {
-  let choice = readline.question(`=> Choose one: ${VALID_CHOICES.join(', ')}\n`);
 
-  while (!choice.match(/r|p|sc|l|sp/)) {
-    choice = readline.question("=> That's not a valid choice, choose another");
+function validateUserChoice (choice) {
+  let choices = Object.values(VALID_CHOICES).reduce ( (acc, value) => {
+    acc.push (value.shorthand, value.beats[0], value.beats[1]);
+    return acc;
+  }, []);
+
+  return choices.includes(choice);
+}
+
+function mapUserChoice (choice) {
+  switch (choice[0]) {
+    case 'r':
+      return 'rock';
+    case 'p':
+      return 'paper';
+    case 'l':
+      return 'lizard';
   }
 
-  switch (choice) {
-    case 'r':
-      return 'rock(r)';
-    case 'p':
-      return 'paper(p)';
+  switch (choice.slice(0,2)) {
     case 'sc':
-      return 'scissors(sc)';
-    case 'l':
-      return 'lizard(l)';
+      return 'scissors';
     case 'sp':
-      return 'spock(sp)';
+      return 'spock';
     default:
-      return 'wrong choice';
+      return 'wrong';
   }
 }
 
-//function to get the computer input
+function getUserChoice() {
+  let choice = readline.question(`=> Choose one: ${Object.keys(VALID_CHOICES).join(', ')}\n`).toLowerCase();
+
+  while (!validateUserChoice (choice)) {
+    prompt ("You've entered an invalid choice, try again");
+    choice = readline.question().toLowerCase();
+  }
+
+  return mapUserChoice(choice);
+}
+
 function getComputerChoice() {
-  let randomIndex = Math.floor (Math.random() * VALID_CHOICES.length);
-  return VALID_CHOICES[randomIndex];
+  let randomIndex = Math.floor (Math.random()
+                    * Object.keys(VALID_CHOICES).length);
+  return Object.keys(VALID_CHOICES)[randomIndex];
 }
 
 function playerWins (userChoice, computerChoice) {
-  if ((userChoice === 'scissors(sc)' && computerChoice.match(SCISSORS_WINNER)) ||
-      (userChoice === 'paper(p)' && computerChoice.match(PAPER_WINNER)) ||
-      (userChoice === 'rock(r)' && computerChoice.match(ROCK_WINNER)) ||
-      (userChoice === 'lizard(l)' && computerChoice.match(LIZARD_WINNER)) ||
-      (userChoice === 'spock(sp)' && computerChoice.match(SPOCK_WINNER))) {
-    return true;
-  } else {
-    return false;
-  }
+  return (userChoice === 'scissors' && VALID_CHOICES.scissors.beats.includes(computerChoice)) ||
+  (userChoice === 'paper' && VALID_CHOICES.paper.beats.includes(computerChoice)) ||
+  (userChoice === 'rock' && VALID_CHOICES.rock.beats.includes(computerChoice)) ||
+  (userChoice === 'lizard' && VALID_CHOICES.lizard.beats.includes(computerChoice)) ||
+  (userChoice === 'spock' && VALID_CHOICES.spock.beats.includes(computerChoice));
 }
 
-function computerWins (userChoice, computerChoice) {
-  if ((userChoice === 'scissors(sc)' && computerChoice.match(SCISSORS_LOSER)) ||
-      (userChoice === 'paper(p)' && computerChoice.match(PAPER_LOSER)) ||
-      (userChoice === 'rock(r)' && computerChoice.match(ROCK_LOSER)) ||
-      (userChoice === 'lizard(l)' && computerChoice.match(LIZARD_LOSER)) ||
-      (userChoice === 'spock(sp)' && computerChoice.match(SPOCK_LOSER))) {
-    return true;
-  } else {
-    return false;
-  }
-}
-//function that returns the winner of a single
-//set to the console after comparing the inputs
-function getSetWinner(userChoice, computerChoice) {
+
+function getRoundWinner(userChoice, computerChoice) {
   prompt (`You chose ${userChoice}, computer chose ${computerChoice}`);
 
   if (playerWins(userChoice, computerChoice)) {
-    prompt('You win the set!\n');
+    prompt('You win the round!\n');
     return 'user';
-  } else if (computerWins(userChoice, computerChoice)) {
-    prompt('Computer wins the set.\n');
-    return 'computer';
-  } else {
+  } else if (userChoice === computerChoice) {
     prompt("It's a tie\n");
     return 'neither wins';
+  } else {
+    prompt('Computer wins the round.\n');
+    return 'computer';
   }
 }
 
-//function that displays the winner of the game to the console
-function displayGameWinner () {
+function playAgain() {
+  prompt('Do you want to play again (y/n)');
+  let answer = readline.question().toLowerCase();
+
+  while (!VALID_YES_OR_NO.includes(answer)) {
+    prompt('Please enter "yes(y)" or "no(n)".');
+    answer = readline.question().toLowerCase();
+  }
+
+  console.clear();
+  return (answer[0] === 'y');
+}
+
+function getReviewRulesChoice () {
+
+  prompt ('Would you like to review the rules?');
+  let viewRulesChoice = readline.question().toLowerCase();
+  while (!VALID_YES_OR_NO.includes (viewRulesChoice)) {
+    prompt ("You've entered an invalid choice, try again");
+    viewRulesChoice = readline.question().toLowerCase();
+  }
+
+  return viewRulesChoice;
+}
+
+function displayRules () {
+  prompt (`In order to win the game, you need to win ${MAX_SCORE} rounds against the computer.`);
+  prompt (`Each round will give you ${Object.keys(VALID_CHOICES).length} choices; they are ${Object.keys(VALID_CHOICES).join(', ')}`);
+  prompt (`The rules are as follows:`);
+  prompt (`   Scissors cuts Paper covers Rock crushes`);
+  prompt (`   Lizard poisons Spock smashes Scissors`);
+  prompt (`   decapitates Lizard eats paper disproves`);
+  prompt (`   Spock vaporizes Rock crushes Scissors\n`);
+}
+
+function getMatchWinner () {
   let userWins = 0;
   let computerWins = 0;
-  while (userWins < 3 && computerWins < 3) {
+  while (userWins < MAX_SCORE && computerWins < MAX_SCORE) {
 
     readline.question('=> Click enter to continue\n');
     console.clear();
-    let setWinner = getSetWinner(getUserChoice(), getComputerChoice());
 
-    if (setWinner === 'user') {
+    let roundWinner = getRoundWinner(getUserChoice(), getComputerChoice());
+
+    if (roundWinner === 'user') {
       userWins += 1;
-    } else if (setWinner === 'computer') {
+    } else if (roundWinner === 'computer') {
       computerWins += 1;
     }
 
     prompt(`The score is user: ${userWins} to computer: ${computerWins} \n`);
   }
 
-  if (userWins === 3) {
-    prompt('You win!');
-  } else if (computerWins === 3) {
-    prompt('Computer wins');
+  if (userWins === MAX_SCORE) {
+    return 'user';
+  } else {
+    return 'computer';
   }
 }
-//function that asks the user if they would like to play again
-function playAgain() {
-  prompt('Do you want to play again (y/n)');
-  let answer = readline.question().toLowerCase();
 
-  while (answer[0] !== 'n' && answer[0] !== 'y') {
-    prompt('Please enter "y" or "no".');
-    answer = readline.question().toLowerCase();
+function displayMatchWinner (winner) {
+  
+  if (winner === 'user') {
+    prompt('YOU WIN!!!!\n=> YOU WIN!!!\n=> YOU WIN!!!');
+  } else {
+    prompt('COMPUTER WINS!!!\n=> COMPUTER WINS\n=> COMPUTER WINS!!!');
   }
-
-  console.clear();
-  return (answer === 'y' || answer === 'yes');
+  
 }
 
-prompt('Welcome to the ultimate game of ROCK, PAPER, SCISSORS!');
+prompt('Welcome to the ultimate game of ROCK, PAPER, SCISSORS!\n');
 
-//A do/while loop that loops until the user enters an answer other than yes
 do {
 
-  displayGameWinner();
+  prompt ("IT'S A NEW MATCH");
+  if (getReviewRulesChoice()[0] === 'y') displayRules();
+
+  displayMatchWinner(getMatchWinner());
 
 } while (playAgain());
+
+prompt("Thank you for participating with us, please come again");
 
