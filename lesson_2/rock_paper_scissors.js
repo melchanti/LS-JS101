@@ -15,12 +15,12 @@ function prompt(message) {
 }
 
 function validateUserChoice (choice) {
-  let choices = Object.values(VALID_CHOICES).reduce ( (acc, value) => {
-    acc.push (value.shorthand, value.beats[0], value.beats[1]);
+  let shortHands = Object.values(VALID_CHOICES).reduce ( (acc, value) => {
+    acc.push (value.shorthand);
     return acc;
   }, []);
 
-  return choices.includes(choice);
+  return shortHands.includes(choice) || Object.keys(VALID_CHOICES).includes(choice);
 }
 
 function mapUserChoice (choice) {
@@ -61,25 +61,26 @@ function getComputerChoice() {
 }
 
 function playerWins (userChoice, computerChoice) {
-  return (userChoice === 'scissors' && VALID_CHOICES.scissors.beats.includes(computerChoice)) ||
-  (userChoice === 'paper' && VALID_CHOICES.paper.beats.includes(computerChoice)) ||
-  (userChoice === 'rock' && VALID_CHOICES.rock.beats.includes(computerChoice)) ||
-  (userChoice === 'lizard' && VALID_CHOICES.lizard.beats.includes(computerChoice)) ||
-  (userChoice === 'spock' && VALID_CHOICES.spock.beats.includes(computerChoice));
+  return VALID_CHOICES[userChoice].beats.includes(computerChoice);
 }
 
-
+function displayRoundWinner (winner) {
+  if (winner === 'user') {
+    prompt('You win the round!\n');
+  } else if (winner === 'computer') {
+    prompt('Computer wins the round.\n');
+  } else {
+    prompt("It's a tie\n");
+  }
+}
 function getRoundWinner(userChoice, computerChoice) {
   prompt (`You chose ${userChoice}, computer chose ${computerChoice}`);
 
   if (playerWins(userChoice, computerChoice)) {
-    prompt('You win the round!\n');
     return 'user';
   } else if (userChoice === computerChoice) {
-    prompt("It's a tie\n");
     return 'neither wins';
   } else {
-    prompt('Computer wins the round.\n');
     return 'computer';
   }
 }
@@ -106,17 +107,17 @@ function getReviewRulesChoice () {
     viewRulesChoice = readline.question().toLowerCase();
   }
 
-  return viewRulesChoice;
+  return (viewRulesChoice[0] === 'y');
 }
 
 function displayRules () {
-  prompt (`In order to win the game, you need to win ${MAX_SCORE} rounds against the computer.`);
-  prompt (`Each round will give you ${Object.keys(VALID_CHOICES).length} choices; they are ${Object.keys(VALID_CHOICES).join(', ')}`);
-  prompt (`The rules are as follows:`);
-  prompt (`   Scissors cuts Paper covers Rock crushes`);
-  prompt (`   Lizard poisons Spock smashes Scissors`);
-  prompt (`   decapitates Lizard eats paper disproves`);
-  prompt (`   Spock vaporizes Rock crushes Scissors\n`);
+  prompt (`In order to win the game, you need to win ${MAX_SCORE} rounds against the computer.
+   Each round will give you ${Object.keys(VALID_CHOICES).length} choices; they are ${Object.keys(VALID_CHOICES).join(', ')}
+   The rules are as follows:
+      Scissors cuts Paper covers Rock crushes
+      Lizard poisons Spock smashes Scissors
+      decapitates Lizard eats paper disproves
+      Spock vaporizes Rock crushes Scissors\n`);
 }
 
 function getMatchWinner () {
@@ -128,6 +129,7 @@ function getMatchWinner () {
     console.clear();
 
     let roundWinner = getRoundWinner(getUserChoice(), getComputerChoice());
+    displayRoundWinner(roundWinner);
 
     if (roundWinner === 'user') {
       userWins += 1;
@@ -160,7 +162,7 @@ prompt('Welcome to the ultimate game of ROCK, PAPER, SCISSORS!\n');
 do {
 
   prompt ("IT'S A NEW MATCH");
-  if (getReviewRulesChoice()[0] === 'y') displayRules();
+  if (getReviewRulesChoice()) displayRules();
 
   displayMatchWinner(getMatchWinner());
 
