@@ -120,6 +120,23 @@ function displayRules () {
       Spock vaporizes Rock crushes Scissors\n`);
 }
 
+function someOneWon (userWins) {
+  if (userWins === MAX_SCORE) {
+    return 'user';
+  } else {
+    return 'computer';
+  }
+}
+
+function incrementScore (roundWinner, userWins, computerWins) {
+  if (roundWinner === 'user') {
+    userWins += 1;
+  } else if (roundWinner === 'computer') {
+    computerWins += 1;
+  }
+
+  return [userWins, computerWins];
+}
 function getMatchWinner () {
   let userWins = 0;
   let computerWins = 0;
@@ -131,20 +148,14 @@ function getMatchWinner () {
     let roundWinner = getRoundWinner(getUserChoice(), getComputerChoice());
     displayRoundWinner(roundWinner);
 
-    if (roundWinner === 'user') {
-      userWins += 1;
-    } else if (roundWinner === 'computer') {
-      computerWins += 1;
-    }
+    let scores = incrementScore(roundWinner, userWins, computerWins);
+    userWins = scores[0];
+    computerWins = scores[1];
 
     prompt(`The score is user: ${userWins} to computer: ${computerWins} \n`);
   }
 
-  if (userWins === MAX_SCORE) {
-    return 'user';
-  } else {
-    return 'computer';
-  }
+  return someOneWon (userWins);
 }
 
 function displayMatchWinner (winner) {
