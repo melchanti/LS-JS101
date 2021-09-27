@@ -1,0 +1,34 @@
+Actions: 1. Variable declaration and assignment call (=)
+	2. Method call (forEach)
+	3. Callback function for forEach
+	4. Method call (map)
+	5. Callback for map
+	6. console.log
+
+Performed On: 1. The expression on the right of the equal sign
+	2. Outer Array
+	3. Each sub-array
+	4. Each sub-array
+	5. Each element of the sub-array
+	6. Each element of the sub-array that is bigger than 5
+
+Side Effects: 1. None
+	2. None
+	3. None
+	4. None
+	5. None
+	6. Outputs a string representation of an integer
+
+Return Value: 1. Undefined
+	2. Undefined
+	3. [undefined, undefined]
+	4. [undefined, undefined]
+	5. Undefined
+	6. Undefined
+
+Is Return Value Used? 1. No
+	2. Yes, it's assigned to the variable myArr 
+	3. No
+	4. Yes, the callback function return
+	5. Yes to assign the first element for map
+	6. Yes, by the callback function

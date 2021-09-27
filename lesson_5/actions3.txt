@@ -1,0 +1,34 @@
+Actions: 1. Method call (map)
+	2. Callback execution
+	3. Element access arr[0]
+	4. Method call Console.log
+	5. Return of the callback function
+
+Performed On: 1. The outer array
+	2. Each Sub-Array
+	3. Each Sub-array
+	4. Element at index 0 of each sub-array
+	5. Element at index 0 of each sub-array
+
+
+
+
+Side Effect: 1. None
+	2. None
+	3. None
+	4. Outputs a string representation of an integer
+	5. Returns an integer
+
+
+Return Value: 1. New array ([1, 3])
+	2. First element of each sub-array
+	3. Element index 0 of sub-array
+	4. Undefined
+	5. Element at index 0 of sub-array
+
+
+Is Return Value Used? 1. No
+	2. Yes, it's used by map for transformation
+	3. Yes, used by console.log and return
+	4. No
+	5. Yes by the map method
