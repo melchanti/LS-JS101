@@ -8,6 +8,7 @@ function swapCase (originalString) {
 function swapCase2 (originalString) {
   returnedString = originalString.replace (/[a-z]/ig, function(v) {
     return v === v.toLowerCase() ? v.toUpperCase(): v.toLowerCase()});
+
   return returnedString;
 }
 
