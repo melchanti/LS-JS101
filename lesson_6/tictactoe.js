@@ -3,6 +3,7 @@ const readline = require('readline-sync');
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
+const MIDDLE_SQUARE = '5';
 
 const VALID_YES_NO = ['yes', 'y', 'no', 'n'];
 const GAMES_TO_WIN = 5;
@@ -89,17 +90,15 @@ function computerChoice (board, marker) {
   for (let line = 0; line < WINNING_LINES.length; line += 1) {
     let [sq1, sq2, sq3] = WINNING_LINES[line].map (sq => String(sq));
 
-    if (board[sq1] === marker &&
-      board[sq2] === marker &&
+
+    if ([sq1, sq2].every(sq => board[sq] === marker) &&
       board[sq3] === INITIAL_MARKER) {
       console.log (sq3);
       return sq3;
-    } else if (board[sq1] === marker &&
-      board[sq3] === marker &&
+    } else if ([sq1, sq3].every(sq => board[sq] === marker) &&
       board[sq2] === INITIAL_MARKER) {
       return sq2;
-    } else if (board[sq3] === marker &&
-      board[sq2] === marker &&
+    } else if ([sq3, sq2].every(sq => board[sq] === marker) &&
       board[sq1] === INITIAL_MARKER) {
       return sq1;
     }
@@ -107,14 +106,22 @@ function computerChoice (board, marker) {
 
   return null;
 }
+
+function offensiveSquare (board) {
+  return computerChoice(board, COMPUTER_MARKER);
+}
+
+function defensiveSquare (board) {
+  return computerChoice (board, HUMAN_MARKER);
+}
 function computerChoosesSquare(board) {
   let square;
-  if (computerChoice(board, COMPUTER_MARKER)) {
-    square = computerChoice (board, COMPUTER_MARKER);
-  } else if (computerChoice(board, HUMAN_MARKER)) {
-    square = computerChoice (board, HUMAN_MARKER);
-  } else if (emptySquares(board).includes('5')) {
-    square = 5;
+  if (offensiveSquare(board)) {
+    square = offensiveSquare(board);
+  } else if (defensiveSquare(board)) {
+    square = defensiveSquare(board);
+  } else if (emptySquares(board).includes(MIDDLE_SQUARE)) {
+    square = MIDDLE_SQUARE;
   } else {
     let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
     square = String(emptySquares(board)[randomIndex]);
@@ -197,6 +204,19 @@ function alternatePlayer (currentPlayer) {
 
   return 'computer';
 }
+
+function askToPlayAgain () {
+  let answer;
+
+  while (true) {
+    prompt('Play agin? (y or n)');
+    answer = readline.question().toLowerCase().trim();
+
+    if (VALID_YES_NO.includes(answer)) break;
+  }
+
+  return answer[0] === 'y';
+}
 //Match Loop
 while (true) {
   let board = initializeBoard();
@@ -242,16 +262,7 @@ while (true) {
   console.clear();
   prompt (`${matchWinner(playerWins, computerWins).toUpperCase()} WON THE MATCH!!!!!`);
 
-  let answer;
-
-  while (true) {
-    prompt('Play agin? (y or n)');
-    answer = readline.question().toLowerCase().trim();
-
-    if (VALID_YES_NO.includes(answer)) break;
-  }
-
-  if (answer[0] !== 'y') break;
+  if (!askToPlayAgain()) break;
 }
 
 prompt ('Thanks for playing Tic Tac Toe!');
