@@ -23,9 +23,6 @@ Algorithm:
 */
 
 function binarySearch (array, searchValue) {
-
-  //console.log (array);
-
   if (array.length === 1) {
     if (array[0] === searchValue) return 0;
 
@@ -52,6 +49,7 @@ function binarySearch (array, searchValue) {
   }
 
 }
+
 let yellowPages = ['Apple Store', 'Bags Galore', 'Bike Store', 'Donuts R Us', 'Eat a Lot', 'Good Food', 'Pasta Place', 'Pizzeria', 'Tiki Lounge', 'Zooper'];
 
 console.log (binarySearch(yellowPages, 'Pizzeria'));
